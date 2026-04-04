@@ -1,0 +1,17 @@
+{
+  "vaultPath": "/Users/shaunducker/Desktop/LandWise/Obsidian-Vault",
+  "port": 3000,
+  "host": "localhost",
+  "allowedOrigins": [
+    "http://localhost:8000",
+    "http://localhost:3000",
+    "http://localhost:2026",
+    "http://localhost:8080"
+  ],
+  "logLevel": "info",
+  "readOnlyMode": false,
+  "indexFile": "README.md",
+  "memoryFolder": "memory/",
+  "agentsFolder": "agents/",
+  "logsFolder": "logs/"
+}

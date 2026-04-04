@@ -1,0 +1,94 @@
+# Obsidian Vault .gitignore
+
+# Obsidian app settings (local to each machine)
+.obsidian/cache/
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/plugins/*/data.json
+.obsidian/plugins/**/data.json
+
+# Local Obsidian settings (don't sync)
+.obsidian/app.json
+.obsidian/community-plugins.json
+.obsidian/core-plugins.json
+.obsidian/core-plugins-migration.json
+
+# Python venv and cache
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# MCP Server runtime
+*.log
+.mcp-server.pid
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Secret files (never commit)
+.env
+.env.local
+.env.*.local
+secrets/
+*.key
+*.pem
+
+# Credentials (never commit)
+credentials.json
+tokens.json
+.credentials
+
+# Large asset files (if used)
+assets/videos/
+assets/large-images/
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Notes to self (not for version control)
+notes/personal/
+notes/draft/
+TODO-PERSONAL.md
+
+# Keep memory and agent files
+!memory/
+!agents/
+!logs/
+!assets/
+!workflows/
+
+# But ignore sensitive memory
+memory/secrets/
+memory/tokens/
+agents/*/api-keys/
