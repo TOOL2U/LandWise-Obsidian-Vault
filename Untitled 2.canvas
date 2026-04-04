@@ -1,0 +1,7 @@
+{
+	"nodes":[
+		{"id":"8cdd5402461d0056","x":-443,"y":-462,"width":400,"height":400,"type":"file","file":"agents/obsidian.md"},
+		{"id":"3e9e1552faf2a8fb","x":2,"y":-462,"width":400,"height":400,"type":"file","file":"agents/README.md"}
+	],
+	"edges":[]
+}

@@ -1,59 +1,34 @@
-# Daily Brief — 2026-04-04
+# Daily Brief — Saturday, April 4, 2026
 
-**Generated:** 2026-04-04T00:00:00Z
-**Status:** Ready for first client intake
-**Focus:** Process Gmail leads, issue first quotes
+## System Status
+- JARVIS Bridge: ⚠️ Offline at morning brief time (needs START_LANDWISE.command)
+- DeerFlow: ✅ Running (localhost:2026)
+- OpenClaw WhatsApp: ✅ Container running, WhatsApp linked (QR scanned)
+- OpenClaw API: ⚠️ Correct host port not yet confirmed (localhost:8080 returns gRPC error)
+- Dashboard: ✅ Fixed — now opens at localhost:8000/dashboard (was /jarvis-dashboard.html)
 
----
+## Pipeline
+- CRM has been cleared of demo data. Currently empty — ready for real leads.
+- 3 warm leads sitting in Gmail, not yet logged to CRM:
 
-## Today's Priorities
+### Leads Requiring Action Today
+| Name | Company | Status | Action |
+|------|---------|--------|--------|
+| Denis Lantheaume | DL Samui Properties | Replied "yes" to partnership | Follow up — 3 days old |
+| Philémon Dedeur | RE/MAX | Met Apr 2, warm | Log to CRM + follow-up |
+| Bob Johnston | Estate Samui | Interested | Log to CRM + follow-up |
 
-1. **Log 3 unlogged leads into CRM** (Denis Lantheaume, Philémon Dedeur, Bob Johnston)
-2. **Qualify leads** — Call/WhatsApp each to confirm interest and package
-3. **Generate quotes** — Draft Visibility Report quotes for each
-4. **Get Shaun approval** — Send quotes via WhatsApp for approval
-5. **Send quotes** — Once approved, send to clients
+## What Was Done Today
+- ✅ Dashboard URL fixed in START_LANDWISE.command
+- ✅ Markdown workflow system built (workflows/, agents/, briefings/)
+- ✅ CLAUDE.md updated to reference workflow system
+- 🔄 OpenClaw API port investigation in progress (wa_send_test.command)
+- 🔄 CRM lead logging for 3 Gmail leads (pending — Shaun to confirm)
 
----
-
-## Lead Status
-
-| Lead | Source | Status | Score | Priority |
-|---|---|---|---|---|
-| Denis Lantheaume | Gmail | New | 70+ HOT | 1 |
-| Philémon Dedeur | Gmail | New | 50-70 WARM | 2 |
-| Bob Johnston | Gmail | New | 50-70 WARM | 2 |
-
----
-
-## Pending Actions
-
-- [ ] agent_crm: Log 3 leads
-- [ ] agent_lead_research: Qualify leads
-- [ ] agent_outreach: Draft initial follow-up messages
-- [ ] agent_outreach: Get Shaun approval for messages
-- [ ] Send approved messages via WhatsApp
-
----
-
-## Blockers
-
-None. Ready to execute.
-
----
-
-## Agent Availability
-
-All 11 agents deployed and trained. Ready to dispatch.
-
-**JARVIS Status:** Online at localhost:8000
-**OpenClaw Status:** Online (Docker container openshell-cluster-nemoclaw)
-**DeerFlow Status:** Ready at localhost:2026
-
----
+## Open Tasks
+See `../BACKLOG.md` for full list.
 
 ## Notes
-
-First real-world test of multi-agent pipeline. Focus is on smooth handoff from intake → qualification → quoting → approval → send.
-
-Goal: First quote sent to Shaun for approval by EOD today.
+- The markdown workflow system is new as of today. All agents should read `../workflows/README.md` at session start.
+- OpenClaw WhatsApp is confirmed linked. Once API port is resolved, approval notifications via WhatsApp will work.
+- Denis Lantheaume replied Apr 1 — partnership is confirmed in principle. Draft a follow-up to formalise.
