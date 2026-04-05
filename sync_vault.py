@@ -18,6 +18,8 @@ import sys
 import json
 import time
 import shutil
+import urllib.request
+import urllib.error
 from datetime import datetime, timezone
 
 # ── PATH SETUP ───────────────────────────────────────────────────────────────
@@ -30,6 +32,7 @@ BRIEFINGS    = os.path.join(BASE, "briefings")
 CRM_FILE     = os.path.join(BRIDGE_DIR, "crm_store.json")
 TASK_LOG     = os.path.join(BRIDGE_DIR, "task_log.json")
 ACTIONS_FILE = os.path.join(BRIDGE_DIR, "pending_actions.json")
+EVENTS_FILE  = os.path.join(BRIDGE_DIR, "events_log.json")
 
 VAULT_MEMORY = os.path.join(VAULT_DIR, "memory")
 VAULT_LOGS   = os.path.join(VAULT_DIR, "logs")
@@ -61,7 +64,9 @@ def _today() -> str:
 
 def sync_crm_snapshot():
     """crm_store.json → memory/crm-snapshot.md"""
-    records = _read_json(CRM_FILE, [])
+    raw = _read_json(CRM_FILE, [])
+    # Handle both list format and dict format {"leads": [...]}
+    records = raw.get("leads", []) if isinstance(raw, dict) else raw
     ts = _now()
 
     lines = [
@@ -204,6 +209,332 @@ def sync_pending_actions():
     print(f"[{_now()}] ✓ pending-actions.md written ({len(pending)} pending)")
 
 
+def sync_content_calendar():
+    """
+    Build a content calendar from pending_actions.json + events_log.json.
+    Tracks all Instagram posts: drafted, pending, published, rejected.
+    → memory/content-calendar.md
+    """
+    actions = _read_json(ACTIONS_FILE, [])
+    events  = _read_json(EVENTS_FILE, [])
+    ts = _now()
+
+    # Collect all instagram_post actions
+    ig_actions = [a for a in actions if a.get("action_type") == "instagram_post"
+                  or a.get("type") == "instagram_post"]
+
+    # Also pick up instagram_posted events from events_log
+    ig_events = [e for e in events if e.get("event_type") in
+                 ("instagram_posted", "action_executed", "action_approved", "action_rejected")
+                 and "instagram" in (e.get("detail", "") + e.get("title", "")).lower()]
+
+    # Build status buckets
+    pending   = [a for a in ig_actions if a.get("status") == "pending"]
+    published = [a for a in ig_actions if a.get("status") in ("executed", "approved", "published")]
+    rejected  = [a for a in ig_actions if a.get("status") == "rejected"]
+
+    lines = [
+        "# Content Calendar — Instagram",
+        f"*Auto-synced by JARVIS — {ts}*",
+        f"*Total posts tracked: {len(ig_actions)} | Pending: {len(pending)} | Published: {len(published)} | Rejected: {len(rejected)}*",
+        "",
+    ]
+
+    if pending:
+        lines += ["## ⏳ Awaiting Approval", ""]
+        for a in pending:
+            short_id  = a.get("short_id") or a.get("id", "")[:8]
+            content   = (a.get("content") or a.get("caption", ""))[:300]
+            topic     = a.get("topic", "")
+            image_url = a.get("image_url", "")
+            queued_at = a.get("queued_at", "")[:19].replace("T", " ")
+            reviewed  = "✅ JARVIS reviewed" if a.get("reviewed_by") else ""
+            lines += [
+                f"### `{short_id}` — {queued_at}",
+                f"- **Topic:** {topic or 'general'}",
+                f"- **Status:** pending Shaun approval  {reviewed}",
+                f"- **Drafted by:** {a.get('drafted_by', 'agent_content')}",
+            ]
+            if image_url:
+                lines.append(f"- **Image:** [view]({image_url})")
+            lines += [
+                f"- **Caption preview:** {content[:200]}{'...' if len(content) > 200 else ''}",
+                "",
+            ]
+    else:
+        lines += ["## ⏳ No posts pending approval", ""]
+
+    if published:
+        lines += ["## ✅ Published Posts", ""]
+        for a in reversed(published[-10:]):  # most recent 10
+            short_id  = a.get("short_id") or a.get("id", "")[:8]
+            content   = (a.get("content") or a.get("caption", ""))[:200]
+            topic     = a.get("topic", "")
+            acted_at  = a.get("acted_at", a.get("queued_at", ""))[:19].replace("T", " ")
+            post_id   = a.get("post_id", "")
+            lines += [
+                f"### `{short_id}` — {acted_at}",
+                f"- **Topic:** {topic or 'general'}",
+            ]
+            if post_id:
+                lines.append(f"- **Instagram Post ID:** `{post_id}`")
+            lines += [
+                f"- **Caption:** {content}{'...' if len(a.get('content',''))>200 else ''}",
+                "",
+            ]
+    else:
+        lines += ["## ✅ No posts published yet", ""]
+
+    if rejected:
+        lines += ["## ❌ Rejected Posts", ""]
+        for a in rejected[-5:]:
+            short_id = a.get("short_id") or a.get("id", "")[:8]
+            acted_at = a.get("acted_at", a.get("queued_at", ""))[:19].replace("T", " ")
+            content  = (a.get("content") or "")[:100]
+            lines += [
+                f"- `{short_id}` — {acted_at} — {content}{'...' if len(a.get('content',''))>100 else ''}",
+            ]
+        lines.append("")
+
+    # Summary statistics from events
+    post_count = len(published)
+    lines += [
+        "---",
+        "## 📊 Content Stats",
+        "",
+        f"- **Total posts in pipeline:** {len(ig_actions)}",
+        f"- **Published:** {post_count}",
+        f"- **Pending approval:** {len(pending)}",
+        f"- **Rejected / discarded:** {len(rejected)}",
+        "",
+        f"*Last sync: {ts}*",
+    ]
+
+    _write(os.path.join(VAULT_MEMORY, "content-calendar.md"), "\n".join(lines))
+    print(f"[{_now()}] ✓ content-calendar.md written ({len(ig_actions)} posts tracked)")
+
+
+def sync_calendar():
+    """
+    GET /calendar/today from JARVIS bridge → memory/calendar.md
+    Skips gracefully if bridge is offline or calendar is not configured.
+    """
+    bridge_url = "http://localhost:8000"
+    ts = _now()
+
+    def _fetch(path):
+        try:
+            with urllib.request.urlopen(f"{bridge_url}{path}", timeout=5) as r:
+                return json.loads(r.read().decode())
+        except Exception:
+            return None
+
+    today_data = _fetch("/calendar/today")
+    week_data  = _fetch("/calendar/week")
+
+    # If bridge is down or calendar not configured, write a graceful placeholder
+    if today_data is None:
+        _write(
+            os.path.join(VAULT_MEMORY, "calendar.md"),
+            f"# Calendar Memory\n> Last sync attempted: {ts}\n\n"
+            "*(JARVIS bridge offline — sync skipped)*\n",
+        )
+        print(f"[{ts}] ⚠ calendar.md skipped (bridge unreachable)")
+        return
+
+    if not today_data.get("ok"):
+        _write(
+            os.path.join(VAULT_MEMORY, "calendar.md"),
+            f"# Calendar Memory\n> Last sync: {ts}\n\n"
+            f"*(Calendar not configured — {today_data.get('error', 'unknown error')})*\n",
+        )
+        print(f"[{ts}] ⚠ calendar.md skipped (not configured)")
+        return
+
+    def _fmt_event(ev):
+        start = (ev.get("start") or "")[:16].replace("T", " ")
+        end   = (ev.get("end") or "")[:16].replace("T", " ")
+        loc   = f" @ {ev['location']}" if ev.get("location") else ""
+        desc  = f"\n  _{ev['description'][:120]}_" if ev.get("description") else ""
+        return f"- **{ev.get('title', '(no title)')}** {start}–{end[-5:]}{loc}{desc}"
+
+    today_events = today_data.get("events", [])
+    week_events  = (week_data or {}).get("events", []) if week_data and week_data.get("ok") else []
+    # Exclude today's events from the "this week" list
+    today_date   = today_data.get("date", "")
+    week_only    = [e for e in week_events if not e.get("start", "").startswith(today_date)]
+
+    lines = [
+        "# Calendar Memory",
+        f"> Auto-updated by JARVIS — {ts}",
+        "",
+        f"## Today's Events ({today_data.get('date', '')})",
+        "",
+    ]
+    if today_events:
+        lines += [_fmt_event(e) for e in today_events]
+    else:
+        lines.append("*(no events today)*")
+
+    lines += [
+        "",
+        "## Upcoming This Week",
+        "",
+    ]
+    if week_only:
+        lines += [_fmt_event(e) for e in week_only[:10]]
+    else:
+        lines.append("*(no upcoming events this week)*")
+
+    lines += ["", "## Recently Booked", "", "*(updated when book_meeting tool is used)*", ""]
+
+    _write(os.path.join(VAULT_MEMORY, "calendar.md"), "\n".join(lines))
+    print(f"[{ts}] ✓ calendar.md written ({len(today_events)} today, {len(week_only)} upcoming)")
+
+
+def _scan_obsidian_event_notes() -> list:
+    """
+    Scan the vault for event notes auto-created by the Obsidian Google Calendar plugin.
+    The plugin creates .md notes with format: {{prefix}}{{event-title}}
+    and marks them with autoCreateEventNotesMarker ("obsidian" tag by default).
+    Returns list of dicts: {title, path, modified_date}
+    """
+    notes = []
+    # Plugin creates notes in vault root or a dedicated calendar folder
+    search_dirs = [
+        VAULT_DIR,
+        os.path.join(VAULT_DIR, "calendar"),
+        os.path.join(VAULT_DIR, "Calendar"),
+        os.path.join(VAULT_DIR, "Events"),
+    ]
+    skip_dirs = {"memory", "logs", "system", "agents", "jarvis", "workflows", ".obsidian"}
+
+    for search_dir in search_dirs:
+        if not os.path.isdir(search_dir):
+            continue
+        for fname in os.listdir(search_dir):
+            if not fname.endswith(".md"):
+                continue
+            # Skip known non-event files
+            if fname.lower() in {"readme.md", "soul.md", "status.md",
+                                  "telegram_history.md", "verification_report.md"}:
+                continue
+            fpath = os.path.join(search_dir, fname)
+            if not os.path.isfile(fpath):
+                continue
+            try:
+                mtime = os.path.getmtime(fpath)
+                mod_date = datetime.fromtimestamp(mtime).strftime("%Y-%m-%d")
+                # Peek at first 10 lines to check for calendar markers
+                with open(fpath, "r", errors="replace") as f:
+                    head = "".join(f.readline() for _ in range(10)).lower()
+                if any(marker in head for marker in
+                       ("obsidian", "google calendar", "gcal", "event-title", "calendar event")):
+                    notes.append({
+                        "title": fname[:-3],  # strip .md
+                        "path":  fpath,
+                        "modified_date": mod_date,
+                    })
+            except Exception:
+                continue
+    return notes
+
+
+def sync_calendar():
+    """
+    Sync calendar data to memory/calendar.md from two sources:
+    1. JARVIS /calendar/today and /calendar/week API endpoints
+    2. Event notes auto-created by the Obsidian Google Calendar plugin
+
+    Skips gracefully if Calendar API is not configured or JARVIS is offline.
+    """
+    ts = _now()
+    today = _today()
+    calendar_path = os.path.join(VAULT_MEMORY, "calendar.md")
+
+    # ── Source 1: JARVIS Calendar API ─────────────────────────────────────────
+    api_events_today = []
+    api_events_week  = []
+    api_source        = "not_configured"
+
+    for path, dest in [("/calendar/today", "today"), ("/calendar/week", "week")]:
+        try:
+            req = urllib.request.Request(
+                f"http://localhost:8000{path}",
+                headers={"Accept": "application/json"},
+            )
+            with urllib.request.urlopen(req, timeout=5) as resp:
+                data = json.loads(resp.read().decode())
+            if data.get("ok"):
+                api_source = "live"
+                if dest == "today":
+                    api_events_today = data.get("events", [])
+                else:
+                    api_events_week = data.get("events", [])
+        except Exception:
+            pass  # bridge offline or endpoint not found — handled below
+
+    # ── Source 2: Obsidian plugin event notes ─────────────────────────────────
+    plugin_notes = _scan_obsidian_event_notes()
+    # Filter to notes modified today or this week
+    plugin_notes_recent = [n for n in plugin_notes if n["modified_date"] >= today]
+
+    # ── Build calendar.md ─────────────────────────────────────────────────────
+    def _fmt(ev):
+        start = (ev.get("start") or "")[:16].replace("T", " ")
+        end   = (ev.get("end") or "")[:16].replace("T", " ")
+        loc   = f" @ {ev['location']}" if ev.get("location") else ""
+        return f"- **{ev.get('title', ev.get('summary', '(no title)'))}** {start}–{end[-5:]}{loc}"
+
+    lines = [
+        "# Calendar Memory",
+        f"> Auto-synced by sync_vault.py — {ts}",
+        f"> Sources: JARVIS API ({api_source})"
+        + (f" + Obsidian plugin ({len(plugin_notes_recent)} event notes)" if plugin_notes_recent else ""),
+        "",
+        f"## Today's Events ({today})",
+        "",
+    ]
+
+    if api_events_today:
+        lines += [_fmt(e) for e in api_events_today]
+    elif api_source == "not_configured":
+        lines.append("> *(Calendar API not configured — run calendar_auth.py)*")
+    else:
+        lines.append("*(no events today via API)*")
+
+    if plugin_notes_recent:
+        lines += ["", "### Event Notes (Obsidian plugin)", ""]
+        for n in plugin_notes_recent:
+            lines.append(f"- [[{n['title']}]] *(modified {n['modified_date']})*")
+
+    # Week view — exclude today
+    week_only = [e for e in api_events_week
+                 if not (e.get("start") or "").startswith(today)]
+    lines += ["", "## Upcoming This Week", ""]
+    if week_only:
+        lines += [_fmt(e) for e in week_only[:10]]
+    else:
+        lines.append("*(no upcoming events this week)*")
+
+    # All plugin notes (broader context)
+    if plugin_notes:
+        older = [n for n in plugin_notes if n not in plugin_notes_recent]
+        if older:
+            lines += ["", "### Other Event Notes in Vault", ""]
+            for n in older[:10]:
+                lines.append(f"- [[{n['title']}]] *(modified {n['modified_date']})*")
+
+    lines += ["", "## Recently Booked", "", "*(updated when book_meeting tool is used)*",
+              "", "---",
+              f"*Last sync: {ts}*"]
+
+    _write(calendar_path, "\n".join(lines))
+    total = len(api_events_today) + len(plugin_notes_recent)
+    print(f"[{ts}] ✓ calendar.md written ({len(api_events_today)} API events, "
+          f"{len(plugin_notes_recent)} plugin notes)")
+
+
 def sync_daily_brief():
     """briefings/YYYY-MM-DD.md → memory/daily-brief.md"""
     today = _today()
@@ -245,6 +576,18 @@ def run_sync():
         sync_daily_brief()
     except Exception as e:
         print(f"  ERROR sync_daily_brief: {e}")
+    try:
+        sync_content_calendar()
+    except Exception as e:
+        print(f"  ERROR sync_content_calendar: {e}")
+    try:
+        sync_calendar()
+    except Exception as e:
+        print(f"  ERROR sync_calendar: {e}")
+    try:
+        sync_calendar()
+    except Exception as e:
+        print(f"  ERROR sync_calendar: {e}")
     print(f"[{_now()}] ✅ Vault sync complete.")
 
 

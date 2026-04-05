@@ -148,13 +148,27 @@ DeerFlow agents should read vault on startup:
 **In DeerFlow agent startup:**
 ```python
 async def startup(agent):
-    # Read vault status
+    # Read primer.md FIRST — recall-stack Layer 2 (current project state, last action, next step)
+    try:
+        primer = open("/Users/shaunducker/Desktop/LandWise/primer.md").read()
+    except Exception:
+        primer = ""
+
+    # Read vault status and today's brief
     vault_status = await http.get("http://localhost:3000/vault/read/status.md")
 
-    # Set agent context
-    agent.context["vault_status"] = vault_status
-    agent.context["today_priorities"] = await http.get("http://localhost:3000/vault/read/memory/daily-brief.md")
+    # Set agent context — primer is the most important for continuity
+    agent.context["primer"]           = primer   # ← recall-stack Layer 2
+    agent.context["vault_status"]     = vault_status
+    agent.context["today_priorities"] = await http.get(
+        "http://localhost:3000/vault/read/memory/daily-brief.md"
+    )
 ```
+
+**IMPORTANT — primer.md is the recall-stack Layer 2 file.**
+- **Path:** `/Users/shaunducker/Desktop/LandWise/primer.md`
+- **Contents:** active project, last completed JARVIS action, exact next step, system state
+- **Rule:** All DeerFlow agents MUST read primer.md before starting work to stay in sync with the JARVIS session state and avoid duplicate or conflicting work.
 
 ---
 
@@ -277,8 +291,43 @@ ls /Users/shaunducker/Desktop/LandWise/Obsidian-Vault/agents/*.md
 
 ---
 
+## PRIMER.MD AWARENESS
+
+DeerFlow agents should be aware of the session primer at startup:
+
+**Path:** `/Users/shaunducker/Desktop/LandWise/primer.md`
+
+`primer.md` is the **recall-stack layer 2** — rewritten at the end of every Claude Code session to capture:
+- Active project phase and completion status
+- Open blockers (DALL-E billing, Make.com, etc.)
+- Exact next step for the next session
+- System state table with current capabilities
+
+**In DeerFlow agent startup, add:**
+```python
+async def startup(agent):
+    # Read session primer for current project state
+    try:
+        with open("/Users/shaunducker/Desktop/LandWise/primer.md") as f:
+            agent.context["session_primer"] = f.read()
+    except FileNotFoundError:
+        pass
+
+    # Read vault status
+    vault_status = await http.get("http://localhost:3000/vault/read/status.md")
+    agent.context["vault_status"] = vault_status
+    agent.context["today_priorities"] = await http.get(
+        "http://localhost:3000/vault/read/memory/daily-brief.md"
+    )
+```
+
+This ensures agents always know what phase of work is active and avoid duplicating completed work.
+
+---
+
 ## SEE ALSO
 
 - MCP Server: /Users/shaunducker/Desktop/LandWise/Obsidian-Vault/mcp_server.py
 - Vault Skills Index: /Users/shaunducker/Desktop/LandWise/Obsidian-Vault/agents/README.md
 - JARVIS Integration: /Users/shaunducker/Desktop/LandWise/Obsidian-Vault/system/integration.md
+- Session Primer: /Users/shaunducker/Desktop/LandWise/primer.md
