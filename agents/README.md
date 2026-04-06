@@ -38,12 +38,33 @@ See individual agent files. Key principles:
 - **JARVIS:** Routes requests to agents via dispatch rules
 - **Claude Dispatch:** Can invoke agents directly for multi-step tasks
 
+## Calendar Access (Google Calendar is LIVE)
+
+Google Calendar is connected via Obsidian plugin (syncs every 10 min) and JARVIS Calendar API.
+
+**Agents that should check calendar before acting:**
+- **agent_admin** — always check calendar before scheduling; use JARVIS `book_meeting` tool
+- **agent_operations** — check for survey conflicts before scheduling site visits
+- **agent_crm** — check calendar when a lead asks about timing or availability
+
+**How to check schedule:**
+1. Read `Obsidian-Vault/memory/calendar.md` — updated every 10 min by Obsidian plugin
+2. Or ask JARVIS to call `read_calendar` tool for live API data
+
+**How to book:**
+- Route booking requests through JARVIS — it has the `book_meeting` tool
+- Always confirm with Shaun before creating events
+- Include: client name, plot address/location, duration (default 60 min)
+
+---
+
 ## Memory Access
 
 Agents can READ:
 - soul.md (identity)
 - status.md (blockers, integration status)
 - daily-brief.md (priorities, lead status)
+- **memory/calendar.md** — Shaun's live calendar (Google Calendar via Obsidian plugin)
 - Other agent souls (for coordination)
 
 Agents can WRITE (append only):

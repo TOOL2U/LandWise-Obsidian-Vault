@@ -89,13 +89,36 @@ On startup and every hour:
 - Manual trigger: `GET /gmail/check-leads`
 - JARVIS tool: `check_new_leads`
 
-### Google Calendar API
+### Google Calendar Integration (LIVE — 2026-04-05)
+
+Google Calendar is now fully connected via two parallel paths:
+
+**Path 1: Obsidian Google Calendar Plugin**
+- Plugin location: `Obsidian-Vault/.obsidian/plugins/google-calendar/`
+- Auto-creates vault notes for every calendar event
+- Syncs every 10 minutes
+- Notes appear in vault root and are scanned by `sync_vault.py → _scan_obsidian_event_notes()`
+- No JARVIS credentials needed — runs independently
+
+**Path 2: JARVIS Calendar API (Direct)**
 - Credentials: `calendar_credentials/token.json` + `client_secret.json`
 - Helper: `_get_calendar_service()` — auto-refreshes expired tokens, fails gracefully
 - Endpoints: `GET /calendar/today`, `GET /calendar/week`, `POST /calendar/book`
 - JARVIS tools: `read_calendar` (period: today/week), `book_meeting`
-- Vault sync: `sync_calendar()` in sync_vault.py writes to memory/calendar.md
 - Setup: run `python3 calendar_auth.py` once to generate token.json
+
+**Vault Sync (both paths):**
+- `sync_calendar()` in sync_vault.py reads JARVIS API + Obsidian plugin notes
+- Writes to `memory/calendar.md` — updated every 10 min (Obsidian) or on demand (sync_vault.py)
+- All 11 agents can read `memory/calendar.md` to see Shaun's schedule
+
+**Agent Calendar Rules:**
+- Always check `memory/calendar.md` before scheduling
+- Route bookings through JARVIS `book_meeting` tool
+- Follow `workflows/booking-a-meeting.md`
+- Agents with scheduling authority: agent_admin (primary), agent_operations (surveys)
+
+**Data sync interval:** 10 min (Obsidian plugin) + every 5 min (sync_vault.py daemon)
 
 ### WhatsApp Port Auto-Discovery
 - `send_whatsapp()` now tries ports in order: cached URL → 18789 (WebSocket gateway) → 8080 (OPENCLAW_URL) → 3000

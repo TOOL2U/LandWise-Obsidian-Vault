@@ -22,7 +22,7 @@
 | DeerFlow | ✅ localhost:2026 |
 | OpenClaw / WhatsApp | ✅ autodiscover port 18789 |
 | Gmail polling | ✅ Auto-polls every 5 min — `check_new_leads` tool active |
-| Calendar API | ✅ Endpoints ready — pending Shaun credentials |
+| Calendar API | ✅ LIVE — token.json saved, Obsidian plugin syncing every 10 min |
 | recall-stack primer.md | ✅ JARVIS loads on every request, auto-rewrites after tool loop |
 | GSD / Ralph | ✅ Installed in .claude/commands/ |
 | DeerFlow primer.md | ✅ Documented — agents read primer.md on startup |
