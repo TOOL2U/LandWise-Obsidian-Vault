@@ -134,8 +134,24 @@ See [[memory/sync-schedule.md]] for details.
 ---
 
 ## Agentic Skills Library
-You have access to structured SKILL.md playbooks at ~/Desktop/LandWise/Jarvis/skills/.
-Before executing complex tasks, check if a relevant skill exists.
-Key skills: @brainstorming (planning), @deep-research (research), @documentation (writing), @security-auditor (review), @code-refactoring (code tasks)
-Skills are loaded from ~/antigravity-awesome-skills/skills/ (1360 total).
-To find a relevant skill: `ls ~/Desktop/LandWise/Jarvis/skills/ | grep <keyword>`
+Before executing complex or vault-specific tasks, discover and read relevant SKILL.md files first.
+
+**Vault-local skills** (highest priority for Obsidian work):
+```bash
+find "$PWD/.claude/skills" -name SKILL.md | sort
+```
+| Skill | Triggers |
+|-------|---------|
+| `obsidian-markdown` | Working with `.md` files, wikilinks, callouts, embeds, frontmatter properties |
+| `obsidian-bases` | Creating/editing `.base` files, filters, formulas, table/card views |
+| `json-canvas` | Working with `.canvas` files, mind maps, flowcharts |
+| `obsidian-cli` | Vault operations via `obsidian` CLI, plugin development |
+| `defuddle` | Extracting clean content from URLs instead of raw WebFetch |
+
+**Global skills** (general tasks):
+```bash
+for dir in "$HOME/.claude/skills" "$HOME/antigravity-awesome-skills/skills" "$PWD/.claude/skills" "$PWD/Jarvis/skills"; do
+	[ -d "$dir" ] && find "$dir" -maxdepth 2 -name SKILL.md 2>/dev/null | grep -i "<keyword>"
+done
+```
+Key global skills: `@brainstorming` (planning), `@deep-research` (research), `@documentation` (writing), `@security-auditor` (review), `@code-refactoring` (code)

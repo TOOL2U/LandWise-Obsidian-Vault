@@ -1,18 +1,20 @@
 # Content Calendar — Instagram
-*Auto-synced by JARVIS — 2026-04-06T05:41:30Z*
-*Total posts tracked: 13 | Pending: 1 | Published: 8 | Rejected: 1*
+*Auto-synced by JARVIS — 2026-04-08T03:44:34Z*
+*Total posts tracked: 14 | Pending: 0 | Published: 10 | Rejected: 1*
 
-## ⏳ Awaiting Approval
-
-### `900e6293` — 2026-04-06 04:58:32
-- **Topic:** general
-- **Status:** pending Shaun approval  
-- **Drafted by:** agent_content
-- **Image:** [view](https://files.catbox.moe/1mtexq.jpg)
-- **Caption preview:** Caption:
- Drone surveys & 3D terrain models — see land like never before. At LandWise, we use cutting-edge tech to help you make informed decisions. Know your future plot inside out. Build smarter, bu...
+## ⏳ No posts pending approval
 
 ## ✅ Published Posts
+
+### `8cc58e39` — 2026-04-06 07:30:32
+- **Topic:** general
+- **Caption:** Caption:
+ Drone surveys & 3D terrain models — the key to unlocking land's true potential! At LandWise, we use cutting-edge technology to deliver our Visibility Report package: drone surveying, viewshe...
+
+### `900e6293` — 2026-04-06 05:57:17
+- **Topic:** general
+- **Caption:** Caption:
+ Drone surveys & 3D terrain models — see land like never before. At LandWise, we use cutting-edge tech to help you make informed decisions. Know your future plot inside out. Build smarter, bu...
 
 ### `06b1ce7a` — 2026-04-05 20:19:12
 - **Topic:** general
@@ -70,9 +72,9 @@ Before you build, before you design — you need to know what you're working wit
 ---
 ## 📊 Content Stats
 
-- **Total posts in pipeline:** 13
-- **Published:** 8
-- **Pending approval:** 1
+- **Total posts in pipeline:** 14
+- **Published:** 10
+- **Pending approval:** 0
 - **Rejected / discarded:** 1
 
-*Last sync: 2026-04-06T05:41:30Z*
+*Last sync: 2026-04-08T03:44:34Z*

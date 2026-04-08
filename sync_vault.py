@@ -584,10 +584,6 @@ def run_sync():
         sync_calendar()
     except Exception as e:
         print(f"  ERROR sync_calendar: {e}")
-    try:
-        sync_calendar()
-    except Exception as e:
-        print(f"  ERROR sync_calendar: {e}")
     print(f"[{_now()}] ✅ Vault sync complete.")
 
 

@@ -9,6 +9,15 @@ Persistent vault memory — agent memory, conversation logs, session state, disp
 - **completed-tasks.md** — Completed Claude tasks (archive)
 - **agent-memory/** — Per-agent persistent memory (agent-created)
 - **sync-schedule.md** — Memory sync schedule and automation
+- **ai-history/** — Shaun's AI conversation knowledge base (imported 2026-04-07)
+  - shaun-profile.md — Owner identity, skills, preferences
+  - property-business.md — Sia Moon business model, services, pipeline
+  - web-development.md — Tech stack, GitHub repos, projects
+  - land-survey-gis.md — QGIS drainage analysis, land survey
+  - legal-contracts.md — Thai lease, company registration, legal
+  - design-branding.md — Logos, uniforms, website design, brand
+  - ai-team-structure.md — Multi-agent AI team, JARVIS, automation vision
+  - thailand-context.md — Thailand living, construction, banking, language
 
 ## Sync Automation
 

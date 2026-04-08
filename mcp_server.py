@@ -44,12 +44,46 @@ app = FastAPI(title="LandWise Vault MCP Server", version="1.0.0")
 
 # ── CORS ────────────────────────────────────────────────────────────
 
+_ALLOWED_ORIGINS = [
+    "http://localhost:8000",   # JARVIS bridge
+    "http://localhost:3000",   # MCP server self
+    "http://localhost:2026",   # DeerFlow
+    "http://localhost:8080",   # OpenClaw
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=_ALLOWED_ORIGINS,
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type", "Accept"],
 )
+
+# ── CONTENT GUARD ───────────────────────────────────────────────────
+
+# Max bytes for any write to the vault
+_MAX_WRITE_BYTES = 50_000   # 50 KB
+_MAX_APPEND_BYTES = 10_000  # 10 KB
+
+# Patterns that indicate raw source code — reject these
+import re as _re
+_CODE_PATTERNS = _re.compile(
+    r"^\s*(def |class |import |from .+ import |async def |"
+    r"function |const |let |var |export |module\.exports|"
+    r"#include |public class |package |using namespace )",
+    _re.MULTILINE,
+)
+
+def _reject_code(content: str, max_bytes: int) -> str | None:
+    """Return an error string if content violates memory-only rules, else None."""
+    if len(content.encode()) > max_bytes:
+        return f"Content too large ({len(content.encode())} bytes, max {max_bytes})"
+    matches = _CODE_PATTERNS.findall(content)
+    if len(matches) >= 3:
+        return (
+            f"Content looks like source code ({len(matches)} code-like lines detected). "
+            "Obsidian is a memory system — store summaries, not code."
+        )
+    return None
 
 # ── HELPERS ─────────────────────────────────────────────────────────
 
@@ -150,19 +184,21 @@ async def read_file(file_path: str):
 
 @app.post("/vault/append/{file_path:path}")
 async def append_file(file_path: str, request: Request):
-    """Append content to a markdown file."""
+    """Append content to a markdown file (memory summaries only)."""
     try:
         body = await request.json()
         content = body.get("content", "")
+
+        err = _reject_code(content, _MAX_APPEND_BYTES)
+        if err:
+            raise HTTPException(status_code=422, detail=err)
 
         file_abs = safe_path(VAULT_PATH, file_path)
         if not file_abs.endswith(".md"):
             file_abs = file_abs + ".md"
 
-        # Ensure directory exists
         os.makedirs(os.path.dirname(file_abs), exist_ok=True)
 
-        # Append content
         with open(file_abs, "a", encoding="utf-8") as f:
             f.write("\n" + content + "\n")
 
@@ -173,6 +209,8 @@ async def append_file(file_path: str, request: Request):
             "size": len(content),
             "timestamp": datetime.now(timezone.utc).isoformat()
         }
+    except HTTPException:
+        raise
     except ValueError as e:
         raise HTTPException(status_code=403, detail=str(e))
     except Exception as e:
@@ -180,19 +218,21 @@ async def append_file(file_path: str, request: Request):
 
 @app.post("/vault/write/{file_path:path}")
 async def write_file(file_path: str, request: Request):
-    """Write (overwrite) a markdown file."""
+    """Write (overwrite) a markdown file (memory summaries only)."""
     try:
         body = await request.json()
         content = body.get("content", "")
+
+        err = _reject_code(content, _MAX_WRITE_BYTES)
+        if err:
+            raise HTTPException(status_code=422, detail=err)
 
         file_abs = safe_path(VAULT_PATH, file_path)
         if not file_abs.endswith(".md"):
             file_abs = file_abs + ".md"
 
-        # Ensure directory exists
         os.makedirs(os.path.dirname(file_abs), exist_ok=True)
 
-        # Write content (overwrite)
         with open(file_abs, "w", encoding="utf-8") as f:
             f.write(content)
 
@@ -203,6 +243,77 @@ async def write_file(file_path: str, request: Request):
             "size": len(content),
             "timestamp": datetime.now(timezone.utc).isoformat()
         }
+    except HTTPException:
+        raise
+    except ValueError as e:
+        raise HTTPException(status_code=403, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/vault/store_memory")
+async def store_memory(request: Request):
+    """
+    Write a structured memory summary to the vault.
+
+    Expected body:
+    {
+        "task_summary": "...",
+        "what_was_done": "...",
+        "result": "...",
+        "key_insight": "...",
+        "next_action": "...",
+        "file": "memory/filename.md"   (optional, defaults to memory/log.md)
+    }
+    """
+    try:
+        body = await request.json()
+        required = {"task_summary", "what_was_done", "result"}
+        missing = required - set(body.keys())
+        if missing:
+            raise HTTPException(
+                status_code=422,
+                detail=f"Missing required fields: {missing}"
+            )
+
+        ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        date = datetime.now().strftime("%Y-%m-%d")
+
+        content = (
+            f"\n## {date} — {body['task_summary'][:80]}\n\n"
+            f"- **What was done:** {body['what_was_done']}\n"
+            f"- **Result:** {body['result']}\n"
+            f"- **Key insight:** {body.get('key_insight', '—')}\n"
+            f"- **Next action:** {body.get('next_action', '—')}\n"
+            f"- **Logged:** {ts}\n"
+        )
+
+        err = _reject_code(content, _MAX_APPEND_BYTES)
+        if err:
+            raise HTTPException(status_code=422, detail=err)
+
+        dest = body.get("file", "memory/log.md")
+        file_abs = safe_path(VAULT_PATH, dest)
+        if not file_abs.endswith(".md"):
+            file_abs += ".md"
+
+        os.makedirs(os.path.dirname(file_abs), exist_ok=True)
+
+        # Write header if file is new
+        if not os.path.exists(file_abs):
+            with open(file_abs, "w", encoding="utf-8") as f:
+                f.write(f"# Memory Log\n*Auto-maintained by JARVIS*\n")
+
+        with open(file_abs, "a", encoding="utf-8") as f:
+            f.write(content)
+
+        return {
+            "status": "ok",
+            "file": dest,
+            "action": "store_memory",
+            "timestamp": ts,
+        }
+    except HTTPException:
+        raise
     except ValueError as e:
         raise HTTPException(status_code=403, detail=str(e))
     except Exception as e:
