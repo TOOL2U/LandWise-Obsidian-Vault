@@ -1,10 +1,10 @@
 # Calendar Memory
-> Auto-synced by sync_vault.py — 2026-04-08T03:44:34Z
-> Sources: JARVIS API (not_configured)
+> Auto-synced by sync_vault.py — 2026-04-08T03:49:54Z
+> Sources: JARVIS API (live)
 
 ## Today's Events (2026-04-08)
 
-> *(Calendar API not configured — run calendar_auth.py)*
+*(no events today via API)*
 
 ## Upcoming This Week
 
@@ -19,4 +19,4 @@
 *(updated when book_meeting tool is used)*
 
 ---
-*Last sync: 2026-04-08T03:44:34Z*
+*Last sync: 2026-04-08T03:49:54Z*
