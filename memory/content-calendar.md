@@ -1,8 +1,14 @@
 # Content Calendar — Instagram
-*Auto-synced by JARVIS — 2026-04-08T03:49:54Z*
-*Total posts tracked: 14 | Pending: 0 | Published: 10 | Rejected: 1*
+*Auto-synced by JARVIS — 2026-04-08T04:07:16Z*
+*Total posts tracked: 15 | Pending: 1 | Published: 10 | Rejected: 1*
 
-## ⏳ No posts pending approval
+## ⏳ Awaiting Approval
+
+### `act_2026` — 2026-04-08 04:07:16
+- **Topic:** general
+- **Status:** pending Shaun approval  
+- **Drafted by:** agent_content
+- **Caption preview:** (Context: To produce the best content, it would be helpful to know which type of post you prefer.) Which content pillar should I choose for today's Instagram post: education, behind-the-scenes, market...
 
 ## ✅ Published Posts
 
@@ -72,9 +78,9 @@ Before you build, before you design — you need to know what you're working wit
 ---
 ## 📊 Content Stats
 
-- **Total posts in pipeline:** 14
+- **Total posts in pipeline:** 15
 - **Published:** 10
-- **Pending approval:** 0
+- **Pending approval:** 1
 - **Rejected / discarded:** 1
 
-*Last sync: 2026-04-08T03:49:54Z*
+*Last sync: 2026-04-08T04:07:16Z*
