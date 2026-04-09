@@ -1,75 +1,69 @@
 # Content Calendar — Instagram
-*Auto-synced by JARVIS — 2026-04-08T04:13:16Z*
-*Total posts tracked: 15 | Pending: 1 | Published: 10 | Rejected: 1*
+*Auto-synced by JARVIS — 2026-04-09T10:38:03Z*
+*Total posts tracked: 24 | Pending: 0 | Published: 20 | Rejected: 1*
 
-## ⏳ Awaiting Approval
-
-### `act_2026` — 2026-04-08 04:07:16
-- **Topic:** general
-- **Status:** pending Shaun approval  
-- **Drafted by:** agent_content
-- **Caption preview:** (Context: To produce the best content, it would be helpful to know which type of post you prefer.) Which content pillar should I choose for today's Instagram post: education, behind-the-scenes, market...
+## ⏳ No posts pending approval
 
 ## ✅ Published Posts
 
-### `8cc58e39` — 2026-04-06 07:30:32
+### `act_2026` — 2026-04-09 00:20:05
 - **Topic:** general
-- **Caption:** Caption:
- Drone surveys & 3D terrain models — the key to unlocking land's true potential! At LandWise, we use cutting-edge technology to deliver our Visibility Report package: drone surveying, viewshe...
+- **Caption:** Here is your Instagram post for today:
 
-### `900e6293` — 2026-04-06 05:57:17
+Content Pillar: Education / Service Explainer
+
+Caption:
+Unlock the true potential of your hillside property with LandWise! 🚀 Our advanced viewshed analysis and 
+
+### `ac00387c` — 2026-04-09 00:19:52
 - **Topic:** general
-- **Caption:** Caption:
- Drone surveys & 3D terrain models — see land like never before. At LandWise, we use cutting-edge tech to help you make informed decisions. Know your future plot inside out. Build smarter, bu...
+- **Caption:** Buying land on Koh Phangan? Do your homework first. Check beach access, legal status, and environmental compliance - LandWise has got you covered.
 
-### `06b1ce7a` — 2026-04-05 20:19:12
+
+
+#KohPhangan #LandIntelligence #RealEstate #Investm...
+
+### `d2d3b786` — 2026-04-09 00:19:41
 - **Topic:** general
-- **Caption:** Caption:
-Explore every inch of your future paradise! 🌴 Using cutting-edge drone surveys & 3D terrain modelling, LandWise brings Koh Phangan's landscapes to life. Know exactly what you're buying before...
+- **Caption:** Buying land on Koh Phangan? Check these critical points to save time and money. LandWise has your back with drone surveys, 3D terrain models, and AI assessments. Get in touch today! 🏡🌍 #KohPhangan #La...
 
-### `647b48ea` — 2026-04-04 16:46:02
+### `44db26d8` — 2026-04-09 00:19:28
 - **Topic:** general
-- **Caption:** Caption:
- Drone surveys & 3D terrain models give you the edge on Koh Phangan's finest plots. At LandWise, we help property buyers and developers see beyond the surface before they build. Expert insigh...
+- **Caption:** CATEGORY: SMART BUYER  
+HEADLINE: Know your land's true potential - 5 key checks!  
+BULLET: Drone surveys reveal unseen features  
+BULLET: 3D models predict building challenges  
+BULLET: AI assessment...
 
-### `809d90d6` — 2026-04-04 17:00:42
+### `1677fbbb` — 2026-04-09 00:19:15
 - **Topic:** general
-- **Caption:** Caption:
- Drone surveys and 3D terrain models 🛩️UTURE from the sky to your fingertips. At LandWise, we bring clarity to your land before you build. Dive into precise info that guides every decision. Y...
+- **Caption:** Discover what to check before buying land in Koh Phangan. From legal ownership to beach access and zoning restrictions, our experts help you make informed decisions. Trust LandWise to ensure your inve...
 
-### `f000b4f7` — 2026-04-04 16:11:54
+### `aafa805f` — 2026-04-09 00:19:03
 - **Topic:** general
-- **Caption:** {
-    "name": "write_file",
-    "arguments": {
-        "description": "Creating Instagram caption for LandWise drone survey post.",
-        "path": "/mnt/user-data/workspace/instagram_caption.txt",
-  ...
+- **Caption:** CAPTION: Understanding your land before buying is crucial. At LandWise, we use advanced drone surveys & 3D modeling to ensure you make informed decisions. Visit us at [landwise.siamoon.com](landwise.s...
 
-### `34a7717b` — 2026-04-04 11:24:04
+### `bec0c210` — 2026-04-08 13:01:01
 - **Topic:** general
-- **Caption:** Caption:
-Unlock the full potential of your land with our Visibility Report! Get a detailed 3D terrain model before you build. Expert insights to help you make informed decisions. Contact us today to t...
+- **Caption:** Drone surveys unlock Koh Phangan's true potential. From steep hillsides to hidden coves, our 3D terrain models and AI insights give you a bird’s-eye view before you build. 🛰️🌐
 
-### `act_2026` — 2026-04-04 07:35:15
+#KohPhangan #LandIntell...
+
+### `6b1a3b09` — 2026-04-08 05:36:30
 - **Topic:** general
-- **Caption:** Sea view adds 30–50% to a villa's value on Koh Phangan.
+- **Caption:** Unlock unparalleled site insight with #LandWise on Koh Phangan. Our drone surveys & 3D terrain modeling give you a bird’s-eye view of your land before you build. Understand the lay of the land, optimi...
 
-But not every hillside plot actually *has* one — at least not from a buildable position. Trees, elevation angles, neighbour structures — they a
-
-### `act_2026` — 2026-04-04 07:35:01
+### `75a3a2d6` — 2026-04-08 04:56:10
 - **Topic:** general
-- **Caption:** Most land buyers find out what their plot can't do *after* they've paid for it.
+- **Caption:** Based on the search results, here’s a compelling Instagram caption for LandWise:
 
-Green zone restrictions. Slopes too steep to build on. Sea view blocked by the neighbour's roof.
+**"Why land surveys matter before buying in Koh Phangan: 
 
-A LandWise survey tak
+Land surveys are non-negotiable. They provide critical insi...
 
-### `act_2026` — 2026-04-04 07:34:45
+### `act_2026` — 2026-04-08 04:35:08
 - **Topic:** general
-- **Caption:** What does your land actually want to become?
-
-Before you build, before you design — you need to know what you're working with. Slope, elevation, sea view potential, zoning constraints. That's what we 
+- **Caption:** (Context: To produce the best content, it would be helpful to know which type of post you prefer.) Which content pillar should I choose for today's Instagram post: education, behind-the-scenes, market
 
 ## ❌ Rejected Posts
 
@@ -78,9 +72,9 @@ Before you build, before you design — you need to know what you're working wit
 ---
 ## 📊 Content Stats
 
-- **Total posts in pipeline:** 15
-- **Published:** 10
-- **Pending approval:** 1
+- **Total posts in pipeline:** 24
+- **Published:** 20
+- **Pending approval:** 0
 - **Rejected / discarded:** 1
 
-*Last sync: 2026-04-08T04:13:16Z*
+*Last sync: 2026-04-09T10:38:03Z*

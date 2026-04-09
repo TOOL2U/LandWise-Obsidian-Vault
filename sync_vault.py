@@ -84,10 +84,10 @@ def sync_crm_snapshot():
             "*Waiting for first enquiry.*",
         ]
     else:
-        # Group by status
+        # Group by stage (CRM uses 'stage', fallback to 'status')
         by_status: dict = {}
         for r in records:
-            s = r.get("status", "unknown")
+            s = r.get("stage", r.get("status", "unknown"))
             by_status.setdefault(s, []).append(r)
 
         for status, leads in sorted(by_status.items()):
@@ -95,12 +95,17 @@ def sync_crm_snapshot():
             lines.append("")
             for r in leads:
                 name  = r.get("name", "Unknown")
-                score = r.get("score", "—")
+                # CRM uses lead_score + classification; fallback to legacy score field
+                raw_score = r.get("lead_score", r.get("score", "—"))
+                classification = r.get("classification", "")
+                score = f"{raw_score} ({classification})" if classification and raw_score != "—" else raw_score
                 email = r.get("email", "")
-                phone = r.get("phone", "")
+                phone = r.get("phone", r.get("whatsapp", ""))
                 notes = r.get("notes", "")
                 created = r.get("created_at", "")[:10]
                 updated = r.get("updated_at", "")[:10]
+                stage   = r.get("stage", r.get("status", ""))
+                package = r.get("package_recommended", "")
 
                 lines.append(f"### {name}")
                 lines.append(f"- **Score:** {score}")
@@ -108,6 +113,10 @@ def sync_crm_snapshot():
                     lines.append(f"- **Email:** {email}")
                 if phone:
                     lines.append(f"- **Phone:** {phone}")
+                if stage:
+                    lines.append(f"- **Stage:** {stage}")
+                if package:
+                    lines.append(f"- **Package:** {package}")
                 if notes:
                     lines.append(f"- **Notes:** {notes}")
                 lines.append(f"- **Created:** {created}  |  **Updated:** {updated}")
