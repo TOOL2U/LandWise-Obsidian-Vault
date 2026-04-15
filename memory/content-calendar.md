@@ -1,80 +1,77 @@
 # Content Calendar — Instagram
-*Auto-synced by JARVIS — 2026-04-09T10:38:03Z*
-*Total posts tracked: 24 | Pending: 0 | Published: 20 | Rejected: 1*
+*Auto-synced by JARVIS — 2026-04-15T04:05:42Z*
+*Total posts tracked: 43 | Pending: 0 | Published: 31 | Rejected: 8*
 
 ## ⏳ No posts pending approval
 
 ## ✅ Published Posts
 
-### `act_2026` — 2026-04-09 00:20:05
+### `6a876564` — 2026-04-11 04:12:45
 - **Topic:** general
-- **Caption:** Here is your Instagram post for today:
+- **Caption:** Land in Thailand is complicated.
+Boundaries shift. Documents get lost. Surveys don't match reality.
 
-Content Pillar: Education / Service Explainer
+That's exactly why LandWise exists.
 
-Caption:
-Unlock the true potential of your hillside property with LandWise! 🚀 Our advanced viewshed analysis and 
+We help buyers, owners, and developers understand what they're...
 
-### `ac00387c` — 2026-04-09 00:19:52
+### `36d91e97` — 2026-04-11 07:01:26
 - **Topic:** general
-- **Caption:** Buying land on Koh Phangan? Do your homework first. Check beach access, legal status, and environmental compliance - LandWise has got you covered.
+- **Caption:** (Context: I need an actual Instagram caption to check against the brief compliance, brand voice, length, and hashtag requirements.) It looks like the "CAPTION (attempt 1)" you provided is a context no...
 
-
-
-#KohPhangan #LandIntelligence #RealEstate #Investm...
-
-### `d2d3b786` — 2026-04-09 00:19:41
+### `c56e5361` — 2026-04-11 04:07:57
 - **Topic:** general
-- **Caption:** Buying land on Koh Phangan? Check these critical points to save time and money. LandWise has your back with drone surveys, 3D terrain models, and AI assessments. Get in touch today! 🏡🌍 #KohPhangan #La...
+- **Caption:** Buying land in Koh Phangan can be exciting, but it’s crucial to know what’s beneath the surface before you commit. We help property buyers and developers gain complete clarity with our advanced land i...
 
-### `44db26d8` — 2026-04-09 00:19:28
+### `e8eb1e73` — 2026-04-11 04:08:33
 - **Topic:** general
-- **Caption:** CATEGORY: SMART BUYER  
-HEADLINE: Know your land's true potential - 5 key checks!  
-BULLET: Drone surveys reveal unseen features  
-BULLET: 3D models predict building challenges  
-BULLET: AI assessment...
+- **Caption:** Thinking of buying land in Koh Phangan? Don't just rely on what you see. True potential and hidden challenges lie beneath the surface. Our drone surveys and 3D terrain models give you unparalleled cla...
 
-### `1677fbbb` — 2026-04-09 00:19:15
+### `32c5d2d0` — 2026-04-11 02:31:17
 - **Topic:** general
-- **Caption:** Discover what to check before buying land in Koh Phangan. From legal ownership to beach access and zoning restrictions, our experts help you make informed decisions. Trust LandWise to ensure your inve...
+- **Caption:** Buying land in Koh Phangan is exciting, but knowing exactly what you're getting is crucial. Our drone surveys, 3D terrain modeling, and AI assessments give you an unmatched understanding of your plot....
 
-### `aafa805f` — 2026-04-09 00:19:03
+### `06ecacc8` — 2026-04-11 04:09:08
 - **Topic:** general
-- **Caption:** CAPTION: Understanding your land before buying is crucial. At LandWise, we use advanced drone surveys & 3D modeling to ensure you make informed decisions. Visit us at [landwise.siamoon.com](landwise.s...
+- **Caption:** Thinking about buying or developing land on Koh Phangan? Don't leave it to chance. Our drone surveys and 3D terrain modeling reveal crucial insights about your plot before you even break ground. We us...
 
-### `bec0c210` — 2026-04-08 13:01:01
+### `e41cb342` — 2026-04-11 02:21:28
 - **Topic:** general
-- **Caption:** Drone surveys unlock Koh Phangan's true potential. From steep hillsides to hidden coves, our 3D terrain models and AI insights give you a bird’s-eye view before you build. 🛰️🌐
+- **Caption:** Thinking of buying land in Koh Phangan? Don't just see it, understand it. LandWise brings you true clarity. We use advanced drone surveys, 3D terrain modeling, and AI to give you the full picture of y...
 
-#KohPhangan #LandIntell...
-
-### `6b1a3b09` — 2026-04-08 05:36:30
+### `act_2026` — 2026-04-11 02:03:27
 - **Topic:** general
-- **Caption:** Unlock unparalleled site insight with #LandWise on Koh Phangan. Our drone surveys & 3D terrain modeling give you a bird’s-eye view of your land before you build. Understand the lay of the land, optimi...
+- **Caption:** Here's your Instagram post for LandWise, focusing on the "Education" content pillar for brand building:
 
-### `75a3a2d6` — 2026-04-08 04:56:10
+CATEGORY: Education
+
+CAPTION:
+Investing in land is a significant decision. Without proper due d
+
+### `88e1aec6` — 2026-04-10 13:40:08
 - **Topic:** general
-- **Caption:** Based on the search results, here’s a compelling Instagram caption for LandWise:
+- **Caption:** Investing in Koh Samui land? Don't leave your future to chance. LandWise brings unparalleled land intelligence, powered by advanced drone surveys and 3D modeling. We're expanding our drone operations ...
 
-**"Why land surveys matter before buying in Koh Phangan: 
-
-Land surveys are non-negotiable. They provide critical insi...
-
-### `act_2026` — 2026-04-08 04:35:08
+### `80f3100c` — 2026-04-10 07:57:27
 - **Topic:** general
-- **Caption:** (Context: To produce the best content, it would be helpful to know which type of post you prefer.) Which content pillar should I choose for today's Instagram post: education, behind-the-scenes, market
+- **Caption:** Considering land on beautiful Koh Phangan? Don't leave your investment to chance. Traditional land checks often miss critical details like hidden flood risks, accurate boundary lines, or precise eleva...
 
 ## ❌ Rejected Posts
 
-- `act_2026` — 2026-04-04 07:05:43 — 
+- `795561ba` — 2026-04-11 07:01:12 — Thinking of buying or developing land on Koh Phangan? Don't leave it to chance. Knowing your plot in...
+- `32fc8eb5` — 2026-04-11 07:01:19 — Most landowners on Koh Phangan commit to a design before they actually understand their plot. That's...
+- `95684e24` — 2026-04-11 07:01:18 — Buying land on Koh Phangan? Know what you're getting before you commit.
+
+Land Snapshot is Package 1 ...
+- `act_2026` — 2026-04-15 04:04:22 — 
+- `act_2026` — 2026-04-15 04:04:22 — 
 
 ---
 ## 📊 Content Stats
 
-- **Total posts in pipeline:** 24
-- **Published:** 20
+- **Total posts in pipeline:** 43
+- **Published:** 31
 - **Pending approval:** 0
-- **Rejected / discarded:** 1
+- **Rejected / discarded:** 8
 
-*Last sync: 2026-04-09T10:38:03Z*
+*Last sync: 2026-04-15T04:05:42Z*

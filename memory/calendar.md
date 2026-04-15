@@ -1,14 +1,14 @@
 # Calendar Memory
-> Auto-synced by sync_vault.py — 2026-04-09T10:38:03Z
-> Sources: JARVIS API (live)
+> Auto-synced by sync_vault.py — 2026-04-15T04:05:42Z
+> Sources: JARVIS API (not_configured)
 
-## Today's Events (2026-04-09)
+## Today's Events (2026-04-15)
 
-- **Call with Maria Ren** 2026-04-09 00:15–01:15
+> *(Calendar API not configured — run calendar_auth.py)*
 
 ## Upcoming This Week
 
-- **Lara's Buyer — Haad Salad Feasibility Review** 2026-04-10 11:45–12:45
+*(no upcoming events this week)*
 
 ### Other Event Notes in Vault
 
@@ -19,4 +19,4 @@
 *(updated when book_meeting tool is used)*
 
 ---
-*Last sync: 2026-04-09T10:38:03Z*
+*Last sync: 2026-04-15T04:05:42Z*

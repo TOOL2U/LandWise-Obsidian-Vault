@@ -92,3 +92,8 @@ TODO-PERSONAL.md
 memory/secrets/
 memory/tokens/
 agents/*/api-keys/
+
+# Claude history files (contain API keys)
+claude_code_history.md
+claude_desktop_history*.md
+memory/brain.sqlite
